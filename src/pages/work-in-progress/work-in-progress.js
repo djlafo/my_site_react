@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import './work-in-progress.css'
 
 class WorkInProgress extends Component {
     render() {
-        return (<div>
+        return (<div class="work-in-progress">
             <h1> 
                 This page is a work in progress
             </h1>

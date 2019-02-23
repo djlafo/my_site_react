@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import './index.css'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import WorkInProgress from './pages/work-in-progress.js'
-import Home from './pages/home.js'
+import WorkInProgress from './pages/work-in-progress/work-in-progress.js'
+import Home from './pages/home/home.js'
 
 const wip = () => (<WorkInProgress/>);
 const homepage = () => (<Home/>);
