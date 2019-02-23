@@ -9,7 +9,7 @@ const wip = (
             This page is a work in progress
         </h1>
         <h3>
-            hosted on an AWS EC2 instance<br/>
+            hosted on an AWS EC2 instance with continuous deployment using CodePipeline<br/>
             <a href="https://github.com/djlafo/my_site_react">source</a>
         </h3>
         <h4>
