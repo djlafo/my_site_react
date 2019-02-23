@@ -4,16 +4,16 @@ import * as serviceWorker from './serviceWorker';
 import './index.css'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import WorkInProgress from './pages/work-in-progress/work-in-progress.js'
-import Home from './pages/home/home.js'
+import Main from './pages/main/main.js'
 
 const wip = () => (<WorkInProgress/>);
-const homepage = () => (<Home/>);
+const main = () => (<Main/>);
 
 const routing = (
     <Router>
         <div>    
             <Route exact path="/" component={wip} />
-            <Route path="/home" component={homepage} />
+            <Route path="/main" component={main} />
         </div>
     </Router>
 );
