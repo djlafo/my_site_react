@@ -1,4 +1,6 @@
 
+version: 0.2
+
 phases:
   install:
     commands:
@@ -9,4 +11,4 @@ phases:
 
 artifacts:
   files:
-    build/*
+    - build/**/*
