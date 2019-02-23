@@ -1,21 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
+
 import './index.css'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from './reducers.js';
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
 import WorkInProgress from './pages/work-in-progress/work-in-progress.js'
 import Main from './pages/main/main.js'
+import FourOhFour from './pages/four-oh-four/four-oh-four.js'
 
-const wip = () => (<WorkInProgress/>);
-const main = () => (<Main/>);
+const store = createStore(rootReducer);
 
 const routing = (
-    <Router>
-        <div>    
-            <Route exact path="/" component={wip} />
-            <Route path="/main" component={main} />
-        </div>
-    </Router>
+    <Provider store={store}>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/workinprogress" component={() => (<WorkInProgress />)} />
+                <Route path="/" component={() => (<Main subRoute=""/>)} />
+                <Route component={() => <FourOhFour />} />
+            </Switch>
+        </BrowserRouter>
+    </Provider>
 );
 
 ReactDOM.render(routing,document.getElementById('root'));

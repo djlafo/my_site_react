@@ -1,0 +1,9 @@
+.sidebar {
+    background-color: #FFF;
+    text-align: right;
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+.links {
+    width: 100%;
+}

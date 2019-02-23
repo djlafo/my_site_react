@@ -1,0 +1,24 @@
+.main {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+.main .content {
+    width: 70%;
+    display: inline-block;
+}
+.main .sidebar {
+    width: 30%;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.main .footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
