@@ -8,22 +8,24 @@ class Home extends Component {
     render() {
         return (
             <div className="home">
-                <Card>
-                    <div className="welcome-card">
-                        Welcome<br/>
-                        <br/>
-                        The website is currently undergoing improvements;
-                        Depending on my motivation at least
-                        <br/>
-                        <div className="img-container">
-                            <a href={yup} 
-                                target="_blank"
-                                rel="noopener noreferrer"> 
-                                <img className="framed" src={yup}/>
-                            </a>
+                <div className="welcome-2-23-19">
+                    <Card>
+                        <div>
+                            Welcome<br/>
+                            <br/>
+                            The website is currently undergoing improvements;
+                            Depending on my motivation at least
+                            <br/>
+                            <div className="img-container">
+                                <a href={yup} 
+                                    target="_blank"
+                                    rel="noopener noreferrer"> 
+                                    <img className="framed" src={yup}/>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                </Card>
+                    </Card>
+                </div>
             </div>
         );
     }

@@ -2,14 +2,17 @@
     padding: 15px;
     font-size: 18px;
 }
-
-.home .welcome-card .img-container {
+.home .welcome-2-23-19 .card {
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.home .welcome-2-23-19 .img-container {
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
 }
-
-.home .welcome-card img, .home .welcome-card a {
+.home .welcome-2-23-19 img, .home .welcome-2-23-19 a {
     width: 100%;
 }
