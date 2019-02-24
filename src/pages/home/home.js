@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './home.css'
 
 import Card from '../../components/card/card.js';
-import yup from '../../images/yup.png'
+import ballin from '../../images/ballin.jpg'
 
 class Home extends Component {
     render() {
@@ -17,10 +17,10 @@ class Home extends Component {
                             Depending on my motivation at least
                             <br/>
                             <div className="img-container">
-                                <a href={yup} 
+                                <a href={ballin} 
                                     target="_blank"
                                     rel="noopener noreferrer"> 
-                                    <img className="framed" src={yup}/>
+                                    <img className="framed" src={ballin}/>
                                 </a>
                             </div>
                         </div>

@@ -1,0 +1,10 @@
+.resume {
+    margin: 15px;
+}
+
+.resume embed {
+    width: 100%;
+    padding: 20px;
+    height: 1150px;
+    box-sizing: border-box;
+}

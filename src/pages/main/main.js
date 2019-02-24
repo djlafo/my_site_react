@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 
 import Home from '../home/home.js';
 import Contact from '../contact/contact.js';
+import Resume from '../resume/resume.js';
 
 import Sidebar from '../../components/sidebar/sidebar.js';
 import Footer from '../../components/footer/footer.js';
@@ -17,6 +18,7 @@ class Main extends Component {
                     <Topbar subRoute={this.props.subRoute} />
                     <Switch>
                         <Route exact path={`${this.props.subRoute}/`} component={() => <Home />} />
+                        <Route path={`${this.props.subRoute}/resume`} component={() => <Resume />} />
                         <Route path={`${this.props.subRoute}/contact`} component={() => <Contact />} />
                     </Switch>
                 </div>

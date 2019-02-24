@@ -12,6 +12,9 @@ class Sidebar extends Component {
                             <Link to={`${this.props.subRoute}/`}>Home</Link>
                         </li>
                         <li>
+                            <Link to={`${this.props.subRoute}/resume`}>Resumé</Link>
+                        </li>
+                        <li>
                             <Link to={`${this.props.subRoute}/contact`}>Contact</Link>
                         </li>
                     </ul>
