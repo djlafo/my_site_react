@@ -9,13 +9,19 @@ class Home extends Component {
         return (
             <div className="home">
                 <Card>
-                    <div class="welcome-card">
+                    <div className="welcome-card">
                         Welcome<br/>
                         <br/>
                         The website is currently undergoing improvements;
                         Depending on my motivation at least
                         <br/>
-                        <img class="framed" src={yup}/>
+                        <div className="img-container">
+                            <a href={yup} 
+                                target="_blank"
+                                rel="noopener noreferrer"> 
+                                <img className="framed" src={yup}/>
+                            </a>
+                        </div>
                     </div>
                 </Card>
             </div>

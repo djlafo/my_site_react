@@ -3,10 +3,13 @@
     font-size: 18px;
 }
 
-.home .welcome-card img {
-    height: 750px;
-    display: block;
+.home .welcome-card .img-container {
+    max-width: 500px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 20px;
+}
+
+.home .welcome-card img, .home .welcome-card a {
+    width: 100%;
 }
