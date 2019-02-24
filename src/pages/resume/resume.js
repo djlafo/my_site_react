@@ -9,7 +9,7 @@ class Resume extends Component {
         return (
             <div className="resume">
                 <Card>
-                    Work in Progress (This is an old resumé)
+                    Work in Progress
                     <a href={resumepdf} download>(Download)</a>
                     <br />
                     <embed src={resumepdf} type="application/pdf" />
