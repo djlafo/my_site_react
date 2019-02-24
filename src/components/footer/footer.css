@@ -1,6 +1,10 @@
 .footer {
-    background-color: #FFF;
+    background-color: var(--foreground-color);
     padding: 10px 20px;
     border-top: 1px solid black;
     text-align: center;
+    color: var(--foreground-color-dark);
+}
+.footer a:visited, .footer a, .footer a:hover {
+    color: var(--foreground-color-dark);
 }
