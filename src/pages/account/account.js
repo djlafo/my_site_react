@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './account.css';
 
-import Cookies from '../../classes/cookies';
 import Login from './login/login';
 
 class Account extends Component {

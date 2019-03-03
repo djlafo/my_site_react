@@ -6,7 +6,8 @@ import Home from '../home/home';
 import Contact from '../contact/contact';
 import Resume from '../resume/resume';
 import Account from '../account/account';
-import FourOhFour from '../four-oh-four/four-oh-four'
+import DirectPost from '../direct-post/direct-post';
+import FourOhFour from '../four-oh-four/four-oh-four';
 
 import Sidebar from '../../components/sidebar/sidebar';
 import Footer from '../../components/footer/footer';
@@ -20,6 +21,7 @@ class Main extends Component {
                     <Topbar subRoute={this.props.subRoute} />
                     <Switch>
                         <Route exact path={`${this.props.subRoute}/`} component={() => <Home />} />
+                        <Route path={`${this.props.subRoute}/post`} component={() => <DirectPost />} />
                         <Route path={`${this.props.subRoute}/resume`} component={() => <Resume />} />
                         <Route path={`${this.props.subRoute}/contact`} component={() => <Contact />} />
                         <Route path={`${this.props.subRoute}/account`} component={() => <Account />} />

@@ -18,9 +18,9 @@ class UserLabel extends Component {
     render() {
         return (
             <div className="user-label">
-                {this.getBadge(this.props.user.role)}
-                {this.props.user.displayName}
-                ({this.props.user.username})
+                {this.getBadge(this.props.user && this.props.user.role)}
+                {this.props.user && this.props.user.displayName}
+                ({this.props.user && this.props.user.username})
             </div>
         );
     }

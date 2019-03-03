@@ -20,3 +20,16 @@
 .post .body {
     font-size: 18px;
 }
+
+.post iframe {
+    width: 100%;
+    height: calc(width);
+}
+
+.post .ql-editor {
+    padding: 0;
+}
+
+.post .ql-container {
+    border: 0 !important;
+}
