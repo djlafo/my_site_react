@@ -6,13 +6,19 @@ import Ajax from '../../classes/ajax';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { ImageResize } from 'quill-image-resize-module'
+
 Quill.register('modules/imageResize', ImageResize);
+Quill.register('attributors/style/size');
 
 class PostEditor extends Component {
 
     modules = {
         toolbar: [
             ['bold', 'italic', 'underline'],
+            [{'color': []}, {'background': []}],
+            [{'size': []}, {'header': []}, {'align': []}],
+            ['blockquote', 'code-block'],
+            [{ 'list': 'ordered'}, {'list': 'bullet'}],
             ['link', 'image', 'video'],
         ],
         imageResize: true
