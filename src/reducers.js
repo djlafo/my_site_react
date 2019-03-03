@@ -1,3 +1,14 @@
-export default function rootReducer(state, action) {
-    return state;
+function rootReducer(state={}, action) {
+    return {
+        apiURL: 'http://localhost:3001/api',
+        user: userReducer(state.user, action)
+    };
 }
+
+function userReducer(state, action) {
+    if(action.type === 'update_user') {
+        return action.data.user || (state && state.user);
+    }
+}
+
+export default rootReducer;

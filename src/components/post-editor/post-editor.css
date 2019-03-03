@@ -1,0 +1,17 @@
+.post-editor .header {
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.post-editor .card {
+    padding-bottom: 25px;
+}
+
+.post-editor .info {
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.post-editor button {
+    float: right;
+}

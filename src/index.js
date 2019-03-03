@@ -6,12 +6,11 @@ import './index.css'
 
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import rootReducer from './reducers.js';
+import rootReducer from './reducers';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import WorkInProgress from './pages/work-in-progress/work-in-progress.js'
-import Main from './pages/main/main.js'
-import FourOhFour from './pages/four-oh-four/four-oh-four.js'
+import WorkInProgress from './pages/work-in-progress/work-in-progress'
+import Main from './pages/main/main'
 
 const store = createStore(rootReducer);
 
@@ -21,7 +20,6 @@ const routing = (
             <Switch>
                 <Route exact path="/workinprogress" component={() => (<WorkInProgress />)} />
                 <Route path="/" component={() => (<Main subRoute=""/>)} />
-                <Route component={() => <FourOhFour />} />
             </Switch>
         </BrowserRouter>
     </Provider>

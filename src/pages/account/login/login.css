@@ -1,0 +1,15 @@
+.login .card {
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.login .card input {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.login .error {
+    color: red;
+    font-size: 12px;
+}

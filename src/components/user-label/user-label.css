@@ -1,0 +1,9 @@
+.user-label .admin-icon {
+    width: 15px;
+    height: 15px;
+    margin: 0 5px;
+}
+
+.user-label {
+    display: inline-block;
+}
