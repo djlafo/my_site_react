@@ -22,8 +22,8 @@
 }
 
 .post iframe {
-    width: 100%;
-    height: calc(width);
+    width: 100vw;
+    height: calc(80vw * (9/16));
 }
 
 .post .ql-editor {
