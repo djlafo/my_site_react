@@ -1,6 +1,6 @@
 function rootReducer(state={}, action) {
     return {
-        apiURL: window.location.href.includes('localhost') ? 'http://localhost:3001/api' : 'https://dylanlafont.com/3001/api',
+        apiURL: window.location.href.includes('localhost') ? 'http://localhost:3001/api' : 'https://dylanlafont.com:3001/api',
         user: userReducer(state.user, action)
     };
 }
