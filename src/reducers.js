@@ -1,6 +1,6 @@
 function rootReducer(state={}, action) {
     return {
-        apiURL: 'http://localhost:3001/api',
+        apiURL: process.env.apiURL || 'http://localhost:3001/api',
         user: userReducer(state.user, action)
     };
 }
