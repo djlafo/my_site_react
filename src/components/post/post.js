@@ -8,6 +8,7 @@ import Ajax from '../../classes/ajax';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import TrashIcon from './trash_icon.png';
+import Moment from 'moment';
 
 class Post extends Component {
     constructor(props) {
@@ -50,7 +51,7 @@ class Post extends Component {
                         </div>
                         <div>
                             <span className="date">
-                                {this.props.post.date} -&nbsp;
+                                {Moment(this.props.post.date).format('MM/DD/YYYY hh:mm A')} -&nbsp;
                             </span>
                             <UserLabel user={this.props.post.user} />
                             <a target="_blank" rel="noopener" href={`/post/${this.props.post.id}`}>(Direct Link)</a>
