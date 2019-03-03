@@ -12,6 +12,6 @@
     margin-bottom: 20px;
 }
 
-.post-editor button {
+.post-editor input[type="submit"] {
     float: right;
 }

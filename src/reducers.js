@@ -7,7 +7,9 @@ function rootReducer(state={}, action) {
 
 function userReducer(state, action) {
     if(action.type === 'update_user') {
-        return action.data.user || (state && state.user);
+        return action.data && action.data.user;
+    } else {
+        return state;
     }
 }
 

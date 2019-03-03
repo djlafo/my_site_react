@@ -12,34 +12,26 @@ class Posts extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: [
-                {
-                    author: {
-                        displayName: "Dylan Lafont",
-                        username: "admin",
-                        role: "Admin"
-                    },
-                    title: "Testing 2",
-                    date: "02/30/35",
-                    text: "This is a test for the new post system"
-                },
-                {
-                    author: {
-                        displayName: "Dylan Lafont",
-                        username: "admin",
-                        role: "Admin"
-                    },
-                    title: "Testing",
-                    date: "02/25/35",
-                    text: "This is a test, ignore this"
-                }
-            ]
+            posts: []
         };
+        this.postsUpdated = this.postsUpdated.bind(this);
+    }
+
+    postsUpdated(newPost) {
+        this.readPosts();
     }
 
     componentDidMount() {
-        Ajax.read(`${this.props.apiURL}/posts`, null, function(err, res, body) {
-            console.log(body);
+        this.readPosts();
+    }
+
+    readPosts() {
+        Ajax.read(`${this.props.apiURL}/posts`, null, (err, res, body) => {
+            if(body && body.length > 0) {
+                this.setState({
+                    posts: body
+                });
+            }
         });
     }
 
@@ -48,13 +40,18 @@ class Posts extends Component {
             <div className="posts">
                 <div>
                     {
-                        (this.props.user && this.props.user.role) === 'Admin' && <PostEditor />
+                        (this.props.user && this.props.user.role) === 'Admin' 
+                        && <PostEditor postsUpdated={this.postsUpdated}
+                            apiURL={this.props.apiURL}
+                            user={this.props.user}/>
                     }
                     {
                         this.state.posts.map((post) => {
                             return <Post key={`${post.date}${post.title}`} 
-                                        user={this.props.user} 
-                                        post={post} />
+                                        post={post} 
+                                        user={this.props.user}
+                                        apiURL={this.props.apiURL}
+                                        postsUpdated={this.postsUpdated} />
                         })
                     }
                 </div>

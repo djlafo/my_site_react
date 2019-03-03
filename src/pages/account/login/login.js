@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import './login.css'
-import Ajax from '../../../classes/ajax'
+import './login.css';
+import Ajax from '../../../classes/ajax';
+import Cookies from '../../../classes/cookies';
 
-import Card from '../../../components/card/card'
+import Card from '../../../components/card/card';
 
 class Login extends Component {
     constructor(props) {
@@ -23,11 +24,16 @@ class Login extends Component {
         e.preventDefault();
         Ajax.post(`${this.props.apiURL}/users/login`, {data: {user: this.state.loginInfo}}, (err,res,body) => {
             const fields = 'email or password';
-            if(body.errors && body.errors[fields]) {
+            if(!body) {
+                this.setState({
+                    errorMessage: "Server did not respond"
+                }); 
+            } else if(body.errors && body.errors[fields]) {
                 this.setState({
                     errorMessage: `${fields} ${body.errors[fields]}`
                 });
             } else {
+                Cookies.setCookie('user', JSON.stringify(body.user));
                 this.props.handleLogin(body);
             }
         });

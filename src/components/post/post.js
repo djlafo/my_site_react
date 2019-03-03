@@ -3,12 +3,35 @@ import './post.css'
 
 import Card from '../../components/card/card';
 import UserLabel from '../../components/user-label/user-label';
+import Ajax from '../../classes/ajax';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import TrashIcon from './trash_icon.png';
 
 class Post extends Component {
+    constructor(props) {
+        super(props);
+        this.deletePost = this.deletePost.bind(this);
+    }
+
+    deletePost() {
+        Ajax.post(`${this.props.apiURL}/posts/delete`, {
+            data: {
+                id: this.props.post.id
+            },
+            headers: {
+                Authorization: `Token ${this.props.user.token}`
+            }
+        }, (err, res, body) => {
+            if(body && body.errors) {
+
+            } else {
+                this.props.postsUpdated();
+            }
+        });
+    }
+
     render() {
         return <div className="post">
             <Card>
@@ -18,18 +41,22 @@ class Post extends Component {
                             {this.props.post.title}
                             &nbsp;
                             {
-                                (this.props.user && this.props.user.role) === 'Admin' && <img src={TrashIcon} className="trash-icon" alt="Delete" />
+                                (this.props.user && this.props.user.role) === 'Admin' 
+                                && <img src={TrashIcon} 
+                                    className="trash-icon" 
+                                    alt="Delete" 
+                                    onClick={this.deletePost}/>
                             }
                         </div>
                         <div>
                             <span className="date">
                                 {this.props.post.date} -&nbsp;
                             </span>
-                            <UserLabel user={this.props.post.author} />
+                            <UserLabel user={this.props.post.user} />
                         </div>
                     </div>
                     <div className="body">
-                        <ReactQuill value={this.props.post.text} modules={{toolbar: false}} readOnly/>
+                        <ReactQuill value={this.props.post.body} modules={{toolbar: false}} readOnly/>
                     </div>
                 </div>
             </Card>

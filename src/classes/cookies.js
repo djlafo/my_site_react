@@ -3,8 +3,10 @@ class Cookies {
         const splitCookies = document.cookie.split(';');
         const hashCookie = {};
         splitCookies.forEach((splitCookie) => {
-            let evenMoreSplitCookie = splitCookie.split(':');
-            hashCookie[evenMoreSplitCookie[0]] = evenMoreSplitCookie[1];
+            let evenMoreSplitCookie = splitCookie.split('=');
+            if(!hashCookie[evenMoreSplitCookie[0]]) {
+                hashCookie[evenMoreSplitCookie[0]] = evenMoreSplitCookie.slice(1, evenMoreSplitCookie.length).join();
+            }
         });
         return hashCookie;
     }
@@ -13,27 +15,20 @@ class Cookies {
         return this.getCookies()[name];
     }
 
-    static getAccountCookie() {
-        return this.getCookie('account');
-    }
-
     static setCookie(name, val) {
-        if(this.getCookie(name)) {
-            this.removeCookie(name);
-        }
-        document.cookie += `${name}=${val}`;
+        document.cookie = `${name}=${val};`;
     }
 
     static removeCookie(name) {
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    }
+
+    static removeAllCookies() {
         const splitCookies = document.cookie.split(';');
-        const newCookie = '';
         splitCookies.forEach((splitCookie) => {
             let evenMoreSplitCookie = splitCookie.split(':');
-            if(evenMoreSplitCookie[0] !== name) {
-                newCookie += `${evenMoreSplitCookie[0]}=${evenMoreSplitCookie[1]};`;
-            }
+            this.removeCookie(evenMoreSplitCookie[0]);
         });
-        document.cookie = newCookie;
     }
 }
 

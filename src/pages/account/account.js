@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './account.css';
 
-import Login from './login/login'
+import Cookies from '../../classes/cookies';
+import Login from './login/login';
 
 class Account extends Component {
     render() {
@@ -11,7 +12,10 @@ class Account extends Component {
                 { 
                     !!this.props.user ? 
                     <div>
-                        Logged in as {this.props.user.displayName}
+                        Logged in as {this.props.user.displayName}<br/>
+                        <button onClick={this.props.onLogout}>
+                            Logout
+                        </button>
                     </div>
                     :
                     <Login />
@@ -27,4 +31,10 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(Account);
+function mapDispatchToProps(dispatch) {
+    return {
+        onLogout: () => dispatch({type: 'update_user', data: null})
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Account);
