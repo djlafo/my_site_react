@@ -7,7 +7,7 @@
     margin-bottom: 4px;
 }
 
-.post .trash-icon {
+.post .trash-icon, .post-editor .trash-icon {
     width: 20px;
     height: 20px;
     cursor: pointer;
@@ -17,11 +17,7 @@
     margin-bottom: 20px;
 }
 
-.post .body {
-    font-size: 18px;
-}
-
-.post iframe {
+.post iframe, .post-editor iframe {
     width: 100vw;
     height: calc(80vw * (9/16));
 }
