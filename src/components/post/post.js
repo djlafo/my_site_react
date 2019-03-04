@@ -50,10 +50,11 @@ class Post extends Component {
                             }
                         </div>
                         <div>
+                            <UserLabel user={this.props.post.user} />
+                            <br/>
                             <span className="date">
                                 {Moment(this.props.post.date).format('MM/DD/YYYY hh:mm A')} -&nbsp;
                             </span>
-                            <UserLabel user={this.props.post.user} />
                             <a target="_blank" rel="noopener" href={`/post/${this.props.post.id}`}>(Direct Link)</a>
                         </div>
                     </div>
