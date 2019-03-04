@@ -2,6 +2,10 @@
     font-size: 14px;
 }
 
+.post .user-label {
+    margin-bottom: 6px;
+}
+
 .post .title {
     font-size: 26px;
     margin-bottom: 4px;
