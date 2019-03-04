@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import './account.css';
 
 import Login from './login/login';
+import Cookies from '../../classes/cookies';
 
 class Account extends Component {
     render() {
@@ -32,7 +33,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        onLogout: () => dispatch({type: 'update_user', data: null})
+        onLogout: () => {
+            Cookies.removeAllCookies();
+            dispatch({type: 'update_user', data: null})
+        }
     }
 }
 
