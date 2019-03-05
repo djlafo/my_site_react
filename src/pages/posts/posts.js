@@ -27,7 +27,7 @@ class Posts extends Component {
 
     readPosts() {
         Ajax.read(`${this.props.apiURL}/posts`, null, (err, res, body) => {
-            if(body && body.length > 0) {
+            if(body) {
                 this.setState({
                     posts: body
                 });

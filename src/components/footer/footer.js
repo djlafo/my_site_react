@@ -5,10 +5,10 @@ class Footer extends Component {
     render() {
         return (
             <div className="footer">
-                Written in React; Hosted on AWS EC2 using CodePipeline
+                Written in React & Express(Node); Hosted on AWS EC2 w/ CodePipeline
                 <a target="_blank" 
                     rel="noopener noreferrer"
-                    href="https://github.com/djlafo/my_site_react">
+                    href="https://github.com/djlafo/">
                     (source)
                 </a>
             </div>
