@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 class ApiRedirect extends Component {
     componentDidMount() {
         if(this.props.apiURL) {
-            window.location = `${this.props.apiURL}${window.location.pathname}`;
+            window.location = `${this.props.apiURL}${window.location.pathname.substring(4)}`;
         }
     }
 
