@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import './main.css';
 import { Switch, Route } from "react-router-dom";
 
-import Home from '../home/home';
-import Contact from '../contact/contact';
-import Resume from '../resume/resume';
-import Account from '../account/account';
-import DirectPost from '../direct-post/direct-post';
-import FourOhFour from '../four-oh-four/four-oh-four';
+import Home from '../home';
+import Contact from '../contact';
+import Resume from '../resume';
+import Account from '../account';
+import DirectPost from '../direct-post';
+import FourOhFour from '../four-oh-four';
 
-import Sidebar from '../../components/sidebar/sidebar';
-import Footer from '../../components/footer/footer';
-import Topbar from '../../components/topbar/topbar';
+import Sidebar from '../../components/sidebar';
+import Footer from '../../components/footer';
+import Topbar from '../../components/topbar';
 
 class Main extends Component {
     render() {

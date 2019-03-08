@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import './direct-post.css'
 
 import Ajax from '../../classes/ajax';
-import Post from '../../components/post/post';
+import Post from '../../components/post';
 import createHistory from 'history/createBrowserHistory';
 
 class DirectPost extends Component {
@@ -23,13 +23,11 @@ class DirectPost extends Component {
     componentDidMount() {
         const url = window.location.href.split('post/');
         if(url.length > 1) {
-            Ajax.read(`${this.props.apiURL}/posts/${url[1]}`, null,
-                (err, res, body) => {
-                    if(body && !body.error) {
-                        this.setState({
-                            post: body
-                        });
-                    }
+            Ajax.read(`${this.props.apiURL}/posts/${url[1]}`, {},
+                (res) => {
+                    this.setState({
+                        post: res
+                    });
                 }
             );
         }

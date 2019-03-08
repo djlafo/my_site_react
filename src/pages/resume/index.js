@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './resume.css';
 
-import Card from '../../components/card/card'
+import Card from '../../components/card'
 import resumepdf from './resume.pdf'
 
 class Resume extends Component {

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './posts.css';
 
-import Post from '../../components/post/post';
-import PostEditor from '../../components/post-editor/post-editor';
+import Post from '../../components/post';
+import PostEditor from '../../components/post-editor';
 import 'react-quill/dist/quill.snow.css';
 import Ajax from '../../classes/ajax';
 
@@ -26,12 +26,10 @@ class Posts extends Component {
     }
 
     readPosts() {
-        Ajax.read(`${this.props.apiURL}/posts`, null, (err, res, body) => {
-            if(body) {
-                this.setState({
-                    posts: body
-                });
-            }
+        Ajax.read(`${this.props.apiURL}/posts`, {}, (res) => {
+            this.setState({
+                posts: res
+            });
         });
     }
 

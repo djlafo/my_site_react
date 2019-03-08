@@ -9,12 +9,12 @@ import { createStore } from 'redux';
 import rootReducer from './reducers';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import WorkInProgress from './pages/work-in-progress/work-in-progress';
-import Main from './pages/main/main';
+import WorkInProgress from './pages/work-in-progress';
+import Main from './pages/main';
 import Cookies from './classes/cookies';
 
 const initUser = Cookies.getCookie('user');
-const store = createStore(rootReducer, {user: initUser && JSON.parse(initUser)});
+const store = createStore(rootReducer, {user: initUser && JSON.parse(initUser || {})});
 
 const routing = (
     <Provider store={store}>
