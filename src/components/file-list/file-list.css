@@ -1,0 +1,32 @@
+.file-list {
+    box-shadow: 0 0 1px 3px #CCC;
+    padding: 15px;
+}
+
+.file-list .header {
+    font-size: 22px;
+    margin-bottom: 16px;
+}
+
+.file-list .list {
+    margin-top: 15px;
+}
+
+.file-list .list table {
+    background-color: #FFF;
+    border: 1px solid black;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.file-list .list th {
+    text-align: left;
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+}
+
+.file-list .trash-icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}

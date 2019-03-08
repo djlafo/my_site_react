@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './contact.css';
 
-import Card from '../../components/card/card';
+import Card from '../../components/card';
 
 class Contact extends Component {
     render() {

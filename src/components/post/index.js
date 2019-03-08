@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import './post.css'
 
-import Card from '../../components/card/card';
-import UserLabel from '../../components/user-label/user-label';
+import Card from '../../components/card';
+import UserLabel from '../user-label';
 import Ajax from '../../classes/ajax';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import TrashIcon from './trash_icon.png';
+import TrashIcon from '../../images/trash_icon.png';
 import Moment from 'moment';
 
 class Post extends Component {
@@ -21,15 +21,9 @@ class Post extends Component {
             data: {
                 id: this.props.post.id
             },
-            headers: {
-                Authorization: `Token ${this.props.user.token}`
-            }
-        }, (err, res, body) => {
-            if(body && body.errors) {
-
-            } else {
-                this.props.postsUpdated();
-            }
+            auth: this.props.user.token
+        }, (res) => {
+            this.props.postsUpdated();
         });
     }
 
@@ -55,7 +49,7 @@ class Post extends Component {
                             <span className="date">
                                 {Moment(this.props.post.date).format('MM/DD/YYYY hh:mm A')} -&nbsp;
                             </span>
-                            <a target="_blank" rel="noopener" href={`/post/${this.props.post.id}`}>(Direct Link)</a>
+                            <a target="_blank" rel="noopener noreferrer" href={`/post/${this.props.post.id}`}>(Direct Link)</a>
                         </div>
                     </div>
                     <div className="body">

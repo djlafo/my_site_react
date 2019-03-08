@@ -4,7 +4,7 @@ import './login.css';
 import Ajax from '../../../classes/ajax';
 import Cookies from '../../../classes/cookies';
 
-import Card from '../../../components/card/card';
+import Card from '../../../components/card';
 
 class Login extends Component {
     constructor(props) {
@@ -22,20 +22,18 @@ class Login extends Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        Ajax.post(`${this.props.apiURL}/users/login`, {data: {user: this.state.loginInfo}}, (err,res,body) => {
-            const fields = 'email or password';
-            if(!body) {
-                this.setState({
-                    errorMessage: "Server did not respond"
-                }); 
-            } else if(body.errors && body.errors[fields]) {
-                this.setState({
-                    errorMessage: `${fields} ${body.errors[fields]}`
-                });
-            } else {
-                Cookies.setCookie('user', JSON.stringify(body.user));
-                this.props.handleLogin(body);
+        Ajax.post(`${this.props.apiURL}/users/login`, {
+            data: {
+                user: this.state.loginInfo
             }
+        }, (res) => {
+            Cookies.setCookie('user', JSON.stringify(res.user));
+                this.props.handleLogin(res);
+        }, (err) => {
+            const fields = 'email or password';
+            this.setState({
+                errorMessage: `${fields} ${err.errors[fields]}`
+            });
         });
     }
 

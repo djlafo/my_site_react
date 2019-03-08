@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './post-editor.css'
 
-import Card from '../card/card';
+import Card from '../card';
 import Ajax from '../../classes/ajax';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -52,26 +52,22 @@ class PostEditor extends Component {
         Ajax.post(`${this.props.apiURL}/posts`, 
             {
                 data: {post: this.state.newPost},
-                headers: {Authorization: `Token ${this.props.user.token}`}
-            }, (err,res,body) => {
-            if(!body) {
-                this.setState({
-                    errorMessage: "Server did not respond"
-                }); 
-            } else if(body.errors) {
-                this.setState({
-                    errorMessage: `${body.errors.message}`
-                });
-            } else {
+                auth: this.props.user.token
+            }, (resp) => {
                 this.setState({ 
                     newPost: {
                         title: '',
                         body: ''
                     }
                 });
-                this.props.postsUpdated(body);
-            }
-        });
+                this.props.postsUpdated(resp);
+            }, (err) => {
+                if(err.errors) {
+                    this.setState({
+                        errorMessage: `${err.errors.message}`
+                    });
+                }
+            });
     }
     
     render() {
