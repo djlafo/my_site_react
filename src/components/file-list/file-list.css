@@ -17,12 +17,17 @@
     border: 1px solid black;
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
 }
 
 .file-list .list th {
     text-align: left;
     background-color: var(--background-color);
     color: var(--foreground-color);
+}
+
+.file-list .list td {
+    word-wrap: break-word;
 }
 
 .file-list .trash-icon {

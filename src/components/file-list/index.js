@@ -14,7 +14,6 @@ class FileList extends Component {
         };
         this.handleFormChange = this.handleFormChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        // this.openFile = this.openFile.bind(this);
         this.deleteFile = this.deleteFile.bind(this);
     }
 
@@ -50,20 +49,12 @@ class FileList extends Component {
         });
     }
 
-    // openFile(e) {
-    //     Ajax.read(`${this.props.apiURL}/files/${e.target.dataset.url}`, {
-    //         auth: this.props.userUser.token
-    //     }, (res) => {
-    //         if(res.url) {
-    //             window.open(res.url);  
-    //         }
-    //     });
-    // }
-
     deleteFile(e) {
         Ajax.post(`${this.props.apiURL}/files/delete`, {
             auth: this.props.userUser.token,
-            file: e.target.dataset.url
+            data: {
+                file: e.target.dataset.url
+            }
         }, (res) => {
             this.readFiles();
         });
