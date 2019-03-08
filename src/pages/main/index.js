@@ -7,6 +7,7 @@ import Contact from '../contact';
 import Resume from '../resume';
 import Account from '../account';
 import DirectPost from '../direct-post';
+import ApiRedirect from '../api-redirect';
 import FourOhFour from '../four-oh-four';
 
 import Sidebar from '../../components/sidebar';
@@ -25,6 +26,7 @@ class Main extends Component {
                         <Route path={`${this.props.subRoute}/resume`} component={() => <Resume />} />
                         <Route path={`${this.props.subRoute}/contact`} component={() => <Contact />} />
                         <Route path={`${this.props.subRoute}/account`} component={() => <Account />} />
+                        <Route path={`${this.props.subRoute}/api`} component={() => <ApiRedirect />} />
                         <Route component={() => <FourOhFour />} />
                     </Switch>
                 </div>
