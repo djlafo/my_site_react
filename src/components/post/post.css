@@ -19,12 +19,15 @@
     margin-bottom: 8px;
     font-style: italic;
     color: #000;
+    display: flex;
+    justify-content: space-between;
 }
 
-.post .trash-icon, .post-editor .trash-icon {
+.post .trash-icon, .post-editor .trash-icon, .post .edit-icon, .post .save-icon {
     width: 20px;
     height: 20px;
     cursor: pointer;
+    margin: 0 5px;
 }
 
 .post .header {
@@ -39,12 +42,13 @@
 .post .ql-container, .post-editor .ql-container {
     font-size: 14px;
     font-family: var(--font-family);
-}
-
-.post .ql-editor {
     padding: 0;
 }
 
-.post .ql-container {
+.post[readOnly] .ql-editor {
+    padding: 0;
+}
+
+.post[readOnly] .ql-container {
     border: 0 !important;
 }
