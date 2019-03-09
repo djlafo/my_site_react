@@ -4,13 +4,15 @@ import './direct-post.css'
 
 import Ajax from '../../classes/ajax';
 import Post from '../../components/post';
+import Card from '../../components/card';
 import createHistory from 'history/createBrowserHistory';
 
 class DirectPost extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            post: {}
+            post: {},
+            errorLoading: false
         };
         this.postsUpdated = this.postsUpdated.bind(this);
         this.history = createHistory();
@@ -28,6 +30,11 @@ class DirectPost extends Component {
                     this.setState({
                         post: res
                     });
+                },
+                () => {
+                    this.setState({
+                        errorLoading: true
+                    });
                 }
             );
         }
@@ -36,10 +43,19 @@ class DirectPost extends Component {
     render() {
         return (
             <div className="direct-post">
+                {this.state.errorLoading
+                ?
+                <div class="error-card">
+                    <Card>
+                        Post does not exist or connection failed
+                    </Card>
+                </div>
+                :
                 <Post post={this.state.post} 
                     user={this.props.user}
                     apiURL={this.props.apiURL}
                     postsUpdated={this.postsUpdated} />
+                }
             </div>
         );
     }

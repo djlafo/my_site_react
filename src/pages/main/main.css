@@ -20,6 +20,15 @@
 .main .main-header {
     z-index: 2;
 }
+
+.main .random-error .card {
+    max-width: 300px;
+    margin-left: auto;
+    margin-right:auto;
+    margin-top: 50px;
+    text-align: center;
+}
+
 @media only screen and (max-width: 900px) {
     .main .sidebar {
         display: none;

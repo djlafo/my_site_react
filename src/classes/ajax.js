@@ -29,7 +29,13 @@ class Ajax {
 
     static _addCallbacks(xhr, { json=true }, onSuccess, onError) {
         if(onSuccess) xhr.onload = () => onSuccess(json ? JSON.parse(xhr.response) : xhr.response);
-        if(onError) xhr.onError = () => onError(json ? JSON.parse(xhr.response) : xhr.response);
+        xhr.onerror = () => {
+            if(onError) {
+                onError();
+            } else {
+                alert('Cannot connect to server');
+            }
+        }
     }
 }
 
