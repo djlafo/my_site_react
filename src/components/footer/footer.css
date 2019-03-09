@@ -7,3 +7,7 @@
     color: var(--foreground-color);
     box-sizing: border-box;
 }
+
+.footer a {
+    color: var(--foreground-color);
+}
