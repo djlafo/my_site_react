@@ -13,13 +13,15 @@ import FourOhFour from '../four-oh-four';
 import Sidebar from '../../components/sidebar';
 import Footer from '../../components/footer';
 import Topbar from '../../components/topbar';
+import MainHeader from '../../components/main-header';
 
 class Main extends Component {
     render() {
         return (
             <div className="main">
+                <MainHeader />
+                <Topbar subRoute={this.props.subRoute} />
                 <div className="content">
-                    <Topbar subRoute={this.props.subRoute} />
                     <Switch>
                         <Route exact path={`${this.props.subRoute}/`} component={() => <Home />} />
                         <Route path={`${this.props.subRoute}/post`} component={() => <DirectPost />} />
@@ -29,8 +31,8 @@ class Main extends Component {
                         <Route path={`${this.props.subRoute}/api`} component={() => <ApiRedirect />} />
                         <Route component={() => <FourOhFour />} />
                     </Switch>
+                    <Sidebar onRouteChange={this.redrawRouter} subRoute={this.props.subRoute} />
                 </div>
-                <Sidebar onRouteChange={this.redrawRouter} subRoute={this.props.subRoute} />
                 <Footer />
             </div>
         );

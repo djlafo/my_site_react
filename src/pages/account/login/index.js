@@ -27,13 +27,15 @@ class Login extends Component {
                 user: this.state.loginInfo
             }
         }, (res) => {
-            Cookies.setCookie('user', JSON.stringify(res.user));
+            if(!res.errors && res) {
+                Cookies.setCookie('user', JSON.stringify(res.user));
                 this.props.handleLogin(res);
-        }, (err) => {
-            const fields = 'email or password';
-            this.setState({
-                errorMessage: `${fields} ${err.errors[fields]}`
-            });
+            } else if(res.errors) {
+                const fields = 'email or password';
+                this.setState({
+                    errorMessage: `${fields} ${res.errors[fields]}`
+                });
+            }
         });
     }
 
@@ -70,7 +72,7 @@ class Login extends Component {
                         <span className="error">
                           {this.state.errorMessage}
                         </span>
-                        <input type="submit" value="submit" />
+                        <input type="submit" value="Login" />
                     </form>
                 </Card>
             </div>

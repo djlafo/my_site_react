@@ -1,0 +1,7 @@
+.main-header {
+    background-color: var(--background-color-dark);
+    color: var(--foreground-color);
+    padding-left: 12px;
+    font-family: 'Monsieur La Doulaise';
+    box-shadow: 0 0 3px 1px #000;
+}

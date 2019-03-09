@@ -5,7 +5,7 @@ class Footer extends Component {
     render() {
         return (
             <div className="footer">
-                Written in React & Express(Node); Hosted on AWS EC2 w/ CodePipeline
+                Stack: React & Express | Ops: CodePipeline to EC2&nbsp;
                 <a target="_blank" 
                     rel="noopener noreferrer"
                     href="https://github.com/djlafo/">

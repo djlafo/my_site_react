@@ -9,6 +9,11 @@
     margin-bottom: 15px;
 }
 
+.login .card input[type=submit] {
+    background-color: var(--background-color-dark);
+    color: var(--foreground-color);
+}
+
 .login .error {
     color: red;
     font-size: 12px;
