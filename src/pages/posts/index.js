@@ -5,6 +5,7 @@ import './posts.css';
 import Post from '../../components/post';
 import PostEditor from '../../components/post-editor';
 import 'react-quill/dist/quill.snow.css';
+import Card from '../../components/card'
 import Ajax from '../../classes/ajax';
 
 class Posts extends Component {
@@ -12,7 +13,8 @@ class Posts extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: []
+            posts: [],
+            errorLoading: false
         };
         this.postsUpdated = this.postsUpdated.bind(this);
     }
@@ -28,7 +30,12 @@ class Posts extends Component {
     readPosts() {
         Ajax.read(`${this.props.apiURL}/posts`, {}, (res) => {
             this.setState({
-                posts: res
+                posts: res,
+                errorLoading: false
+            });
+        }, () => {
+            this.setState({
+                errorLoading: true
             });
         });
     }
@@ -37,6 +44,14 @@ class Posts extends Component {
         return (
             <div className="posts">
                 <div>
+                    {
+                        this.state.errorLoading && 
+                        <div className="error-card">
+                            <Card>
+                                Error Loading Posts
+                            </Card>
+                        </div> 
+                    }
                     {
                         (this.props.user && this.props.user.role) === 'Admin' 
                         && <PostEditor postsUpdated={this.postsUpdated}

@@ -9,3 +9,8 @@
 .card img.framed {
     border: 5px solid black;
 }
+
+.error-card .card {
+    background-color: red;
+    color: white;
+}
