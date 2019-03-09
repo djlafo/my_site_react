@@ -17,11 +17,13 @@ class Post extends Component {
         super(props);
         this.state = {
             editing: false,
-            body: props.post.body
+            body: props.post.body,
+            title: props.post.title
         };
         this.deletePost = this.deletePost.bind(this);
         this.editPost = this.editPost.bind(this);
         this.saveEdit = this.saveEdit.bind(this);
+        this.handleFormChange = this.handleFormChange.bind(this);
     }
 
     deletePost() {
@@ -41,13 +43,25 @@ class Post extends Component {
         });
     }
 
-    saveEdit() {
+    handleFormChange(e) {
+        const name = (e.target) ? e.target.name : 'body';
+        const value = (e.target) ? e.target.value : e;
+        this.setState(state => {
+            return {
+                [name]: value
+            };
+        });
+    }
+
+    saveEdit(e) {
+        e.preventDefault();
         this.setState({ 
             editing: false
         });
         Ajax.post(`${this.props.apiURL}/posts/${this.props.post.id}`, {
             data: {
-                body: this.state.body
+                body: this.state.body,
+                title: this.state.title
             },
             auth: this.props.user.token
         });
@@ -56,21 +70,31 @@ class Post extends Component {
     render() {
         return <div className="post" readOnly={!this.state.editing}>
             <Card>
-                <div>
+                <form onSubmit={this.saveEdit}>
                     <div className="header">
                         <div className="title">
-                            <span>
-                                {this.props.post.title}
-                            </span>
+                            {this.state.editing
+                            ?
+                                <input type="text" 
+                                    required
+                                    name="title"
+                                    placeholder="Title"
+                                    onChange={this.handleFormChange}
+                                    value={this.state.title} />
+                            :
+                                <span>
+                                    {this.state.title}
+                                </span>
+                            }
                             &nbsp;
                             {
                                 (this.props.user && this.props.user.role) === 'Admin' 
                                 && <span>
                                         {this.state.editing ? 
-                                        <img src={SaveIcon}
+                                        <input type="image"
+                                            src={SaveIcon}
                                             className="save-icon"
-                                            alt="Save"
-                                            onClick={this.saveEdit} />
+                                            alt="Save" />
                                             :
                                         <img src={EditIcon}
                                             className="edit-icon"
@@ -94,9 +118,13 @@ class Post extends Component {
                         </div>
                     </div>
                     <div className="body">
-                        <ReactQuill value={this.state.body} modules={{toolbar: this.state.editing}} readOnly={!this.state.editing}/>
+                        <ReactQuill value={this.state.body} 
+                            name="body"
+                            modules={{toolbar: this.state.editing}} 
+                            readOnly={!this.state.editing}
+                            onChange={this.handleFormChange}/>
                     </div>
-                </div>
+                </form>
             </Card>
         </div>
     }
