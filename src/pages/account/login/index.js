@@ -72,7 +72,7 @@ class Login extends Component {
                         <span className="error">
                           {this.state.errorMessage}
                         </span>
-                        <input type="submit" value="submit" />
+                        <input type="submit" value="Login" />
                     </form>
                 </Card>
             </div>

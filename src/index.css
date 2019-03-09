@@ -2,6 +2,7 @@ body {
   --foreground-color: rgb(224, 224, 224);
   --foreground-color-dark: rgb(54, 47, 53);
   --background-color: rgb(116, 90, 116);
+  --background-color-dark: rgb(78, 1, 78);
   --font-family: 'Averia Serif Libre';
   /* --font-family: 'Belgrano'; */
   /* --font-family: 'Press Start 2P'; */

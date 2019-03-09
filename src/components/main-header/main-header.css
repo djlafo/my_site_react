@@ -1,5 +1,5 @@
 .main-header {
-    background-color: rgb(78, 1, 78);
+    background-color: var(--background-color-dark);
     color: var(--foreground-color);
     padding-left: 12px;
     font-family: 'Monsieur La Doulaise';

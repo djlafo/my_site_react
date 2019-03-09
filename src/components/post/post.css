@@ -1,7 +1,13 @@
 .post .details {
     font-size: 12px;
     box-shadow: 0 0 2px 1px var(--background-color);
+    background-color: var(--background-color-dark);
+    color: var(--foreground-color);
     padding: 5px;
+}
+
+.post .details a {
+    color: var(--foreground-color);
 }
 
 .post .user-label {
