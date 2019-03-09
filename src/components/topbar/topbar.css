@@ -7,6 +7,3 @@
     flex-direction: row;
     justify-content: space-between;
 }
-.topbar a:visited, .topbar a:hover, .topbar a {
-    color: var(--foreground-color-dark);
-}

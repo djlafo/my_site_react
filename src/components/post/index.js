@@ -43,7 +43,7 @@ class Post extends Component {
                                     onClick={this.deletePost}/>
                             }
                         </div>
-                        <div>
+                        <div className="details">
                             <UserLabel user={this.props.post.user} />
                             <br/>
                             <span className="date">

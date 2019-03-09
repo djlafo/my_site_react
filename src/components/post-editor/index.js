@@ -54,18 +54,18 @@ class PostEditor extends Component {
                 data: {post: this.state.newPost},
                 auth: this.props.user.token
             }, (resp) => {
-                this.setState({ 
-                    newPost: {
-                        title: '',
-                        body: ''
-                    }
-                });
-                this.props.postsUpdated(resp);
-            }, (err) => {
-                if(err.errors) {
+                if(resp.errors) {
                     this.setState({
-                        errorMessage: `${err.errors.message}`
+                        errorMessage: `${resp.errors.message}`
                     });
+                } else {
+                    this.setState({ 
+                        newPost: {
+                            title: '',
+                            body: ''
+                        }
+                    });
+                    this.props.postsUpdated(resp);
                 }
             });
     }

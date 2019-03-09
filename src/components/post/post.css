@@ -1,5 +1,7 @@
-.post .user-label, .post .date {
-    font-size: 14px;
+.post .details {
+    font-size: 12px;
+    box-shadow: 0 0 2px 1px var(--background-color);
+    padding: 5px;
 }
 
 .post .user-label {
@@ -7,8 +9,10 @@
 }
 
 .post .title {
-    font-size: 26px;
-    margin-bottom: 4px;
+    font-size: 30px;
+    margin-bottom: 8px;
+    font-style: italic;
+    color: #000;
 }
 
 .post .trash-icon, .post-editor .trash-icon {
@@ -18,12 +22,17 @@
 }
 
 .post .header {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .post iframe, .post-editor iframe {
     width: 100vw;
     height: calc(80vw * (9/16));
+}
+
+.post .ql-container, .post-editor .ql-container {
+    font-size: 14px;
+    font-family: var(--font-family);
 }
 
 .post .ql-editor {
