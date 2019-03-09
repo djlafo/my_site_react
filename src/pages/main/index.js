@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './main.css';
-import { Switch, Route } from "react-router-dom";
+import { withRouter, Switch, Route } from "react-router-dom";
+
 
 import Home from '../home';
 import Contact from '../contact';
@@ -15,6 +17,8 @@ import Footer from '../../components/footer';
 import Topbar from '../../components/topbar';
 import MainHeader from '../../components/main-header';
 import Card from '../../components/card';
+import Ajax from '../../classes/ajax';
+import Cookies from '../../classes/cookies';
 
 class Main extends Component {
     constructor(props) {
@@ -32,6 +36,14 @@ class Main extends Component {
     resetError() {
         this.setState({
             error: false
+        });
+    }
+
+    componentDidMount() {
+        Ajax.read(`${this.props.apiURL}/auth`, {auth: this.props.user.token}, (res) => {
+            if(res.errors) this.props.logout();
+        }, () => {
+            this.props.logout();
         });
     }
 
@@ -73,4 +85,22 @@ class Main extends Component {
     }
 }
 
-export default Main;
+function mapDispatchToProps(dispatch) {
+    return {
+        logout: () => {
+            Cookies.removeAllCookies();
+            dispatch({type: 'update_user', data: null})
+        }
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        apiURL: state.apiURL,
+        user: state.user
+    }
+}
+
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(Main)
+);
