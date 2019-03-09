@@ -20,8 +20,10 @@ class FileList extends Component {
     readFiles() {
         Ajax.read(`${this.props.apiURL}/files`, {
             auth: this.props.userUser.token
-        }, (res) => {          
-            this.setState({files: res.files});
+        }, (res) => {
+            if(res.files) {
+                this.setState({files: res.files});
+            }
         });  
     }
 
