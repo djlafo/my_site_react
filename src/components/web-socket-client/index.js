@@ -30,7 +30,7 @@ class WebSocketClient extends Component {
     }
 
     newWebSocket() {
-        const ws = new WebSocket(`ws://${this.props.serverURL}/`);
+        const ws = new WebSocket(this.props.socketURL);
         ws.onopen = (e) => {
             console.log('WebSocket connection made');
             this.setState({
@@ -267,7 +267,7 @@ class WebSocketClient extends Component {
 
 function mapStateToProps(state) {
     return {
-        serverURL: state.serverURL,
+        socketURL: state.socketURL,
         user: state.user,
         logoutPending: state.logoutPending
     };
