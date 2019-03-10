@@ -204,7 +204,7 @@ class WebSocketClient extends Component {
     }
 
     isUnread(id) {
-        return !!this.state.unread.find(person => person === id);
+        return !!this.state.unread.find(person => person === Number(id));
     }
 
     redirectClient(e) {
@@ -253,7 +253,7 @@ class WebSocketClient extends Component {
                     !this.admin(this.props.user) &&
                     Object.keys(this.state.messages).length > 0 &&
                     <input type="button"
-                        value={`Chat (${this.state.clientList.length}) ${this.state.unread.length > 0 ? '(New Messages)': ''}`}
+                        value={`Chat (${Object.keys(this.state.messages).length}) ${this.state.unread.length > 0 ? '(New Messages)': ''}`}
                         onClick={this.toggleConsole} />
                 }
                 {
