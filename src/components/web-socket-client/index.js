@@ -28,6 +28,9 @@ class WebSocketClient extends Component {
         this.updateChatInput = this.updateChatInput.bind(this);
         this.isUnread = this.isUnread.bind(this);
         this.keepAlive = this.keepAlive.bind(this);
+        this.redirectClient = this.redirectClient.bind(this);
+        this.applyClass = this.applyClass.bind(this);
+        this.alertClient = this.alertClient.bind(this);
     }
 
     newWebSocket() {
@@ -60,7 +63,6 @@ class WebSocketClient extends Component {
 
     keepAlive() {
         if(this.state.ws) {
-            console.log('Stayin alive');
             this.sendMessage({}, {});
             setTimeout(this.keepAlive, 30000);
         }
@@ -96,17 +98,30 @@ class WebSocketClient extends Component {
                 console.log(msg.msg);
             break;
             case 'client_list':
-                console.log('new client list:', msg.msg); 
                 this.setState({
                     clientList: msg.msg
                 });
             break;
             case 'client_message':
-                console.log('Client message received: ', msg);
                 this.addMessage(msg.sender, {
                     msg: msg.msg,
                     sender: msg.sender
                 });
+            break;
+            case 'redirect':
+                window.location = msg.target;
+            break;
+            case 'apply_class':
+                const body = document.querySelector('body');
+                const c = msg.class;
+                if(body.classList.contains(c) && !msg.apply) {
+                    body.classList.remove(c);
+                } else if(msg.apply) {
+                    body.classList.add(c);
+                }
+            break;
+            case 'alert':
+                alert(msg.msg);
             break;
             default: 
                 console.log('Unhandled WS message type: ' + msg.type);
@@ -121,8 +136,9 @@ class WebSocketClient extends Component {
         let newState = {
             messages: newMessages
         };
-        if(!message.me && !this.state.unread.find(person => message.sender) && this.state.selectedChatClient !== message.sender) {
-            newState.unread = this.state.unread.concat(message.sender);
+        let sender = Number(message.sender);
+        if(!message.me && !this.state.unread.find(person => person === sender) && this.state.selectedChatClient !== sender) {
+            newState.unread = this.state.unread.concat(sender);
         }
         this.setState(newState);
     }
@@ -149,7 +165,7 @@ class WebSocketClient extends Component {
 
     chatWith(e) {
         let newState = {
-            selectedChatClient: e.target.dataset.id
+            selectedChatClient: Number(e.target.dataset.id)
         };
         let ind = this.state.unread.findIndex(person => person === e.target.dataset.id);
         if(ind || ind === 0) {
@@ -191,6 +207,39 @@ class WebSocketClient extends Component {
         return !!this.state.unread.find(person => person === id);
     }
 
+    redirectClient(e) {
+        let target = prompt('Enter URL');
+        if(!target) return;
+        let client = e.target.dataset.id;
+        this.sendMessage({
+            type: 'redirect',
+            client: client,
+            target: target,
+            token: this.props.user.token
+        }, {});
+    }
+
+    applyClass(e) {
+        this.sendMessage({
+            type: 'apply_class',
+            class: e.target.dataset.class,
+            client: e.target.dataset.id,
+            token: this.props.user.token,
+            apply: e.target.value === e.target.dataset.regText
+        }, {});
+        e.target.value = e.target.value === e.target.dataset.regText ? e.target.dataset.altText : e.target.dataset.regText;
+    }
+
+    alertClient(e) {
+        let msg = prompt('Enter message');
+        this.sendMessage({
+            type: 'alert',
+            client: e.target.dataset.id,
+            msg: msg,
+            token: this.props.user.token
+        }, {});
+    }
+
     render() {
         return (
             <div className="web-socket-client">
@@ -202,6 +251,7 @@ class WebSocketClient extends Component {
                 }
                 {
                     !this.admin(this.props.user) &&
+                    Object.keys(this.state.messages).length > 0 &&
                     <input type="button"
                         value={`Chat (${this.state.clientList.length}) ${this.state.unread.length > 0 ? '(New Messages)': ''}`}
                         onClick={this.toggleConsole} />
@@ -213,10 +263,48 @@ class WebSocketClient extends Component {
                             !this.state.selectedChatClient &&
                             this.state.selectedChatClient !== 0 &&
                             <div>
-                                {
+                                {   this.admin(this.props.user) && 
                                     this.state.clientList.map(client => {
                                         return <div key={`${client.id}${client.username}`}>
                                             {`${client.id}. ${client.ip || ''} ${client.username || ''}`}
+                                            <input type="button"
+                                                value="Chat"
+                                                data-id={client.id}
+                                                onClick={this.chatWith} />
+                                            <input type="button"
+                                                value="Redirect"
+                                                data-id={client.id}
+                                                onClick={this.redirectClient} />
+                                            <input type="button"
+                                                value="Flip Vertical"
+                                                data-reg-text="Flip Vertical"
+                                                data-alt-text="Unflip Vertical"
+                                                data-class="flip-vertical"
+                                                data-id={client.id}
+                                                onClick={this.applyClass} />
+                                            <input type="button"
+                                                value="Tinify"
+                                                data-reg-text="Tinify"
+                                                data-alt-text="Un-Tinify"
+                                                data-class="tiny"
+                                                data-id={client.id}
+                                                onClick={this.applyClass} />
+                                            <input type="button"
+                                                value="Alert"
+                                                data-id={client.id}
+                                                onClick={this.alertClient} />
+                                            {
+                                                this.isUnread(client.id) && 
+                                                <span> New Messages </span>
+                                            }
+                                        </div>;
+                                    })
+                                }
+                                {   !this.admin(this.props.user) && 
+                                    Object.keys(this.state.messages).map(m => {
+                                        const client = this.state.clientList.find(c => c.id = m);
+                                        return <div key={`${client.id}${client.username}`}>
+                                            {`${client.id}. ${client.username || ''}`}
                                             <input type="button"
                                                 value="Chat"
                                                 data-id={client.id}
