@@ -27,6 +27,7 @@ class WebSocketClient extends Component {
         this.sendChatMessage = this.sendChatMessage.bind(this);
         this.updateChatInput = this.updateChatInput.bind(this);
         this.isUnread = this.isUnread.bind(this);
+        this.keepAlive = this.keepAlive.bind(this);
     }
 
     newWebSocket() {
@@ -37,6 +38,7 @@ class WebSocketClient extends Component {
                 ws: ws,
                 authenticated: false
             });
+            this.keepAlive();
         };
         ws.onclose = (e) => {
             console.log('WebSocket connection closed');
@@ -53,6 +55,15 @@ class WebSocketClient extends Component {
             console.error('WebSocket error: ', e.message);
         };
         ws.onmessage = this.handleMessage.bind(this);
+    }
+    
+
+    keepAlive() {
+        if(this.state.ws) {
+            console.log('Stayin alive');
+            this.sendMessage({}, {});
+            setTimeout(this.keepAlive, 30000);
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -186,13 +197,13 @@ class WebSocketClient extends Component {
                 {
                     this.admin(this.props.user) &&
                     <input type="button"
-                        value={`Toggle WSS Console ${this.state.unread.length > 0 ? '(New Messages)': ''}`} 
+                        value={`Toggle WSS Console  (${this.state.clientList.length}) ${this.state.unread.length > 0 ? '(New Messages)': ''}`} 
                         onClick={this.toggleConsole} />
                 }
                 {
                     !this.admin(this.props.user) &&
                     <input type="button"
-                        value={`Chat ${this.state.unread.length > 0 ? '(New Messages)': ''}`}
+                        value={`Chat (${this.state.clientList.length}) ${this.state.unread.length > 0 ? '(New Messages)': ''}`}
                         onClick={this.toggleConsole} />
                 }
                 {
