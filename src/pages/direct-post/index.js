@@ -45,7 +45,7 @@ class DirectPost extends Component {
             <div className="direct-post">
                 {this.state.errorLoading
                 ?
-                <div class="error-card">
+                <div className="error-card">
                     <Card>
                         Post does not exist or connection failed
                     </Card>

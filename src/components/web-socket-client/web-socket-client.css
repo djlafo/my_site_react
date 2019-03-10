@@ -1,0 +1,26 @@
+.web-socket-client .chat-window {
+    min-height: 150px;
+    width: 80vw;
+    position: relative;
+    padding-bottom: 50px;
+}
+
+.web-socket-client .chat-window form {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.web-socket-client .chat-window input[type=text],
+.web-socket-client .chat-window input[type=submit] {
+    width: 100%;
+}
+
+.web-socket-client .my-message {
+    text-align: right;
+    width: 100%;
+}
+
+.web-socket-client .other-message {
+
+}

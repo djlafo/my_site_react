@@ -28,7 +28,7 @@ function mapDispatchToProps(dispatch) {
     return {
         onLogout: () => {
             Cookies.removeAllCookies();
-            dispatch({type: 'update_user', data: null})
+            dispatch({type: 'logout'})
         }
     }
 }
