@@ -13,6 +13,19 @@ import SaveIcon from '../../images/save_icon.png';
 import Moment from 'moment';
 
 class Post extends Component {
+
+    modules = {
+        toolbar: [
+            ['bold', 'italic', 'underline'],
+            [{'color': []}, {'background': []}],
+            [{'size': []}, {'header': []}, {'align': []}],
+            ['blockquote', 'code-block'],
+            [{ 'list': 'ordered'}, {'list': 'bullet'}],
+            ['link', 'image', 'video'],
+        ],
+        imageResize: true
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -120,7 +133,7 @@ class Post extends Component {
                     <div className="body">
                         <ReactQuill value={this.state.body} 
                             name="body"
-                            modules={{toolbar: this.state.editing}} 
+                            modules={this.state.editing ? this.modules : {toolbar: false}} 
                             readOnly={!this.state.editing}
                             onChange={this.handleFormChange}/>
                     </div>
