@@ -137,11 +137,10 @@ class WebSocketClient extends Component {
     }
 
     chatWith(e) {
-        let id = (e.target.dataset.id && e.target.dataset.id !== 0) ? e.target.dataset.id : e.target.dataset.username;
         let newState = {
-            selectedChatClient: id
+            selectedChatClient: e.target.dataset.id
         };
-        let ind = this.state.unread.findIndex(person => person === id);
+        let ind = this.state.unread.findIndex(person => person === e.target.dataset.id);
         if(ind || ind === 0) {
             newState.unread = Array.from(this.state.unread);
             newState.unread.splice(ind, 1);
@@ -167,14 +166,14 @@ class WebSocketClient extends Component {
             msg: this.state.chatInput,
             me: true
         });
-        this.setState({
-            chatInput: ''
-        });
         this.sendMessage({
             type: 'client_message',
             target: this.state.selectedChatClient,
             msg: this.state.chatInput
         }, {});
+        this.setState({
+            chatInput: ''
+        });
     }
 
     isUnread(id) {
@@ -206,14 +205,13 @@ class WebSocketClient extends Component {
                                 {
                                     this.state.clientList.map(client => {
                                         return <div key={`${client.id}${client.username}`}>
-                                            {`${(client.id || client.id === 0) ? client.id : ''}. ${this.admin(this.props.user) ? client.ip : ''} ${client.username || ''}`}
+                                            {`${client.id}. ${client.ip || ''} ${client.username || ''}`}
                                             <input type="button"
                                                 value="Chat"
                                                 data-id={client.id}
-                                                data-username={client.username}
                                                 onClick={this.chatWith} />
                                             {
-                                                this.isUnread(client.username || client.id) && 
+                                                this.isUnread(client.id) && 
                                                 <span> New Messages </span>
                                             }
                                         </div>;
