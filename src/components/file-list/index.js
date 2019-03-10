@@ -107,6 +107,7 @@ class FileList extends Component {
                                         </td>
                                         <td>
                                             <img src={TrashIcon} 
+                                                alt="Delete"
                                                 data-url={file.path}
                                                 onClick={this.deleteFile}
                                                 className="trash-icon" />

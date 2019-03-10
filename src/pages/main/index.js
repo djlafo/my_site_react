@@ -19,6 +19,7 @@ import MainHeader from '../../components/main-header';
 import Card from '../../components/card';
 import Ajax from '../../classes/ajax';
 import Cookies from '../../classes/cookies';
+import WebSocketClient from '../../components/web-socket-client';
 
 class Main extends Component {
     constructor(props) {
@@ -40,10 +41,14 @@ class Main extends Component {
     }
 
     componentDidMount() {
-        Ajax.read(`${this.props.apiURL}/auth`, {auth: this.props.user.token}, (res) => {
-            if(res.errors) this.props.logout();
+        Ajax.read(`${this.props.apiURL}/auth`, {
+            auth: this.props.user.token
+        }, (res) => {
+            if(res.errors && this.props.user) {
+                this.props.logout();
+            }
         }, () => {
-            this.props.logout();
+            if(this.props.user) this.props.logout();
         });
     }
 
@@ -80,6 +85,7 @@ class Main extends Component {
                     <Sidebar onRouteChange={this.redrawRouter} subRoute={this.props.subRoute} />
                 </div>
                 <Footer />
+                <WebSocketClient />
             </div>
         );
     }

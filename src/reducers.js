@@ -1,7 +1,10 @@
 function rootReducer(state={}, action) {
+    const user = userReducer(state.user, action);
     return {
         apiURL: process.env.apiURL || 'http://localhost:3001/api',
-        user: userReducer(state.user, action)
+        serverURL: process.env.serverURL || 'localhost:3001',
+        user: user,
+        logoutPending: action.type === 'logout' || (user && state.logoutPending )
     };
 }
 
