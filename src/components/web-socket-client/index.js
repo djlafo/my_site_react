@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Cookies from '../../classes/cookies';
+import { Debounce } from '../../classes/helpers';
 
 import Card from '../../components/card';
 
@@ -17,7 +18,9 @@ class WebSocketClient extends Component {
             selectedChatClient: null,
             chatInput: '',
             messages: {},
-            unread: []
+            unread: [],
+            firstNotification: true,
+            debounce: new Debounce()
         };
         this.newWebSocket();
         this.toggleConsole = this.toggleConsole.bind(this);
@@ -31,6 +34,8 @@ class WebSocketClient extends Component {
         this.redirectClient = this.redirectClient.bind(this);
         this.applyClass = this.applyClass.bind(this);
         this.alertClient = this.alertClient.bind(this);
+        if (Notification && Notification.permission !== "granted")
+            Notification.requestPermission();
     }
 
     newWebSocket() {
@@ -98,6 +103,26 @@ class WebSocketClient extends Component {
                 console.log(msg.msg);
             break;
             case 'client_list':
+                this.state.debounce.call(() => {
+                    if(this.state.firstNotification) {
+                        this.setState({
+                            firstNotification: false
+                        });
+                        return;
+                    }
+                    if(!Notification || !this.state.clientList.length || !this.props.user || this.props.user.role !== 'Admin') return;
+                    Notification.requestPermission().then((permission) => {
+                        if(permission !== 'granted') return;
+                        const notificationText = `Clients: ${this.state.clientList.length}`;
+                        const notification = new Notification('Clients ', {
+                            body: notificationText,
+                        });
+                        
+                        notification.onclick = function() {
+                            window.focus();    
+                        };
+                    });
+                }, 10000);
                 this.setState({
                     clientList: msg.msg
                 });
