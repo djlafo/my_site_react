@@ -5,17 +5,15 @@ import './direct-post.css'
 import Ajax from '../../classes/ajax';
 import Post from '../../components/post';
 import Card from '../../components/card';
-import createHistory from 'history/createBrowserHistory';
 
 class DirectPost extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            post: {},
+            post: null,
             errorLoading: false
         };
         this.postsUpdated = this.postsUpdated.bind(this);
-        this.history = createHistory();
     }
 
     postsUpdated() {
@@ -43,7 +41,8 @@ class DirectPost extends Component {
     render() {
         return (
             <div className="direct-post">
-                {this.state.errorLoading
+                {
+                this.state.errorLoading
                 ?
                 <div className="error-card">
                     <Card>
@@ -51,10 +50,11 @@ class DirectPost extends Component {
                     </Card>
                 </div>
                 :
-                <Post post={this.state.post} 
-                    user={this.props.user}
-                    apiURL={this.props.apiURL}
-                    postsUpdated={this.postsUpdated} />
+                    this.state.post && 
+                    <Post post={this.state.post || {}} 
+                        user={this.props.user}
+                        apiURL={this.props.apiURL}
+                        postsUpdated={this.postsUpdated} />
                 }
             </div>
         );

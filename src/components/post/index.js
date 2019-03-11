@@ -131,7 +131,7 @@ class Post extends Component {
                         </div>
                     </div>
                     <div className="body">
-                        <ReactQuill value={this.state.body} 
+                        <ReactQuill value={this.state.body}
                             name="body"
                             modules={this.state.editing ? this.modules : {toolbar: false}} 
                             readOnly={!this.state.editing}
