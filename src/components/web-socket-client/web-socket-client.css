@@ -16,6 +16,10 @@
     width: 100%;
 }
 
+.web-socket-client .main-window input {
+    margin: 5px;
+}
+
 .web-socket-client .my-message {
     text-align: right;
     width: 100%;

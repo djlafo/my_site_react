@@ -287,7 +287,7 @@ class WebSocketClient extends Component {
                         {
                             !this.state.selectedChatClient &&
                             this.state.selectedChatClient !== 0 &&
-                            <div>
+                            <div className="main-window">
                                 {   this.admin(this.props.user) && 
                                     this.state.clientList.map(client => {
                                         return <div key={`${client.id}${client.username}`}>
