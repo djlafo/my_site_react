@@ -3,74 +3,30 @@ import { connect } from 'react-redux';
 import Cookies from '../../classes/cookies';
 import { Debounce } from '../../classes/helpers';
 
+import WebSocketClient from './web-socket-client';
 import Card from '../../components/card';
 
-import './web-socket-client.css';
+import './web-socket-panel.css';
+import WebSocketClient from './web-socket-client';
 
-class WebSocketClient extends Component {
+class WebSocketPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            ws: null,
-            clientList: [],
-            authenticated: false,
+            ws: new WebSocketClient({
+                URL: this.props.socketURL
+            }),
             expanded: false,
-            selectedChatClient: null,
-            chatInput: '',
-            messages: {},
-            unread: [],
             firstNotification: true,
             debounce: new Debounce()
         };
-        this.newWebSocket();
         this.toggleConsole = this.toggleConsole.bind(this);
         this.admin = this.admin.bind(this);
-        this.chatWith = this.chatWith.bind(this);
-        this.exitChat = this.exitChat.bind(this);
-        this.sendChatMessage = this.sendChatMessage.bind(this);
-        this.updateChatInput = this.updateChatInput.bind(this);
-        this.isUnread = this.isUnread.bind(this);
-        this.keepAlive = this.keepAlive.bind(this);
         this.redirectClient = this.redirectClient.bind(this);
         this.applyClass = this.applyClass.bind(this);
         this.alertClient = this.alertClient.bind(this);
         if (Notification && Notification.permission !== "granted")
             Notification.requestPermission();
-    }
-
-    newWebSocket() {
-        const ws = new WebSocket(this.props.socketURL);
-        ws.onopen = (e) => {
-            console.log('WebSocket connection made');
-            this.setState({
-                ws: ws,
-                authenticated: false
-            });
-            this.keepAlive();
-        };
-        ws.onclose = (e) => {
-            console.log('WebSocket connection closed');
-            this.setState({
-                ws: null,
-                authenticated: false
-            });
-            setTimeout(() => {
-                console.log('Attempting reconnect...');
-                this.newWebSocket();
-            }, 5000);
-        };
-        ws.onerror = (e) => {
-            console.error('WebSocket error: ', e.message);
-        };
-        ws.onmessage = this.handleMessage.bind(this);
-    }
-    
-
-    keepAlive() {
-        if(this.state.ws) {
-            this.sendMessage({}, {});
-            setTimeout(this.keepAlive, 30000);
-        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -96,86 +52,6 @@ class WebSocketClient extends Component {
         return true;
     }
 
-    handleMessage(e) {
-        const msg = JSON.parse(e.data);
-        switch(msg.type) {
-            case 'info':
-                console.log(msg.msg);
-            break;
-            case 'client_list':
-                this.state.debounce.call(() => {
-                    if(this.state.firstNotification) {
-                        this.setState({
-                            firstNotification: false
-                        });
-                        return;
-                    }
-                    if(!Notification || !this.state.clientList.length || !this.props.user || this.props.user.role !== 'Admin') return;
-                    Notification.requestPermission().then((permission) => {
-                        if(permission !== 'granted') return;
-                        const notificationText = `Clients: ${this.state.clientList.length}`;
-                        const notification = new Notification('Clients ', {
-                            body: notificationText,
-                        });
-                        
-                        notification.onclick = function() {
-                            window.focus();    
-                        };
-                    });
-                }, 10000);
-                this.setState({
-                    clientList: msg.msg
-                });
-            break;
-            case 'client_message':
-                this.addMessage(msg.sender, {
-                    msg: msg.msg,
-                    sender: msg.sender
-                });
-            break;
-            case 'redirect':
-                window.location = msg.target;
-            break;
-            case 'apply_class':
-                const body = document.querySelector('body');
-                const c = msg.class;
-                if(body.classList.contains(c) && !msg.apply) {
-                    body.classList.remove(c);
-                } else if(msg.apply) {
-                    body.classList.add(c);
-                }
-            break;
-            case 'alert':
-                alert(msg.msg);
-            break;
-            default: 
-                console.log('Unhandled WS message type: ' + msg.type);
-            break;
-        }
-    }
-
-    addMessage(chatTarget, message) {
-        let newMessages = Object.assign(this.state.messages);
-        if(!newMessages[chatTarget]) newMessages[chatTarget] = [];
-        newMessages[chatTarget].push(message);
-        let newState = {
-            messages: newMessages
-        };
-        let sender = Number(message.sender);
-        if(!message.me && !this.state.unread.find(person => person === sender) && this.state.selectedChatClient !== sender) {
-            newState.unread = this.state.unread.concat(sender);
-        }
-        this.setState(newState);
-    }
-
-    sendMessage(json, { ws }) {
-        if(ws) {
-            ws.send(JSON.stringify(json));
-        } else {
-            this.state.ws.send(JSON.stringify(json));
-        }
-    }
-
     toggleConsole() {
         this.setState(state => {
             return {
@@ -186,50 +62,6 @@ class WebSocketClient extends Component {
 
     admin(user) {
         return user && user.role === 'Admin';
-    }
-
-    chatWith(e) {
-        let newState = {
-            selectedChatClient: Number(e.target.dataset.id)
-        };
-        let ind = this.state.unread.findIndex(person => person === e.target.dataset.id);
-        if(ind || ind === 0) {
-            newState.unread = Array.from(this.state.unread);
-            newState.unread.splice(ind, 1);
-        }
-        this.setState(newState);
-    }
-
-    exitChat() {
-        this.setState({
-            selectedChatClient: null
-        });
-    }
-
-    updateChatInput(e) {
-        this.setState({
-            chatInput: e.target.value
-        });
-    }
-
-    sendChatMessage(e) {
-        e.preventDefault();
-        this.addMessage(this.state.selectedChatClient, {
-            msg: this.state.chatInput,
-            me: true
-        });
-        this.sendMessage({
-            type: 'client_message',
-            target: this.state.selectedChatClient,
-            msg: this.state.chatInput
-        }, {});
-        this.setState({
-            chatInput: ''
-        });
-    }
-
-    isUnread(id) {
-        return !!this.state.unread.find(person => person === Number(id));
     }
 
     redirectClient(e) {
@@ -343,43 +175,6 @@ class WebSocketClient extends Component {
                                 }
                             </div>
                         }
-                        {
-                            (this.state.selectedChatClient || this.state.selectedChatClient === 0) &&
-                            <div className="chat-window">
-                                <input type="button"
-                                    onClick={this.exitChat}
-                                    value="Back" />
-
-                                {
-                                    this.state.messages[this.state.selectedChatClient] &&
-                                    this.state.messages[this.state.selectedChatClient].map((message, ind) => {
-                                        return <div className="chat-message" key={`${message.msg}${ind}`}>
-                                            {    
-                                                message.me ? 
-                                                <div className='my-message'>
-                                                    {message.msg}
-                                                </div>
-                                                :
-                                                <div className='other-message'>
-                                                    {this.state.selectedChatClient}<br/>
-                                                    {message.msg}
-                                                </div>
-                                            }
-                                        </div>;
-                                    })
-                                }
-
-                                <form onSubmit={this.sendChatMessage}>
-                                    <input type="text"
-                                        required 
-                                        value={this.state.chatInput}
-                                        onChange={this.updateChatInput}
-                                        placeholder="Chat here" />
-                                    <input type="submit"
-                                        value="Enter" />
-                                </form>
-                            </div>
-                        }
                     </Card>
                 }
             </div>
@@ -404,4 +199,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WebSocketClient);
+export default connect(mapStateToProps, mapDispatchToProps)(WebSocketPanel);

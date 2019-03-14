@@ -25,10 +25,6 @@
     width: 100%;
 }
 
-.web-socket-client .other-message {
-
-}
-
 .flip-vertical {
     transform: rotate(180deg);
 }

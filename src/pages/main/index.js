@@ -19,7 +19,7 @@ import MainHeader from '../../components/main-header';
 import Card from '../../components/card';
 import Ajax from '../../classes/ajax';
 import Cookies from '../../classes/cookies';
-import WebSocketClient from '../../components/web-socket-client';
+import WebSocketPanel from '../../components/web-socket-panel';
 
 class Main extends Component {
     constructor(props) {
@@ -85,7 +85,7 @@ class Main extends Component {
                     <Sidebar onRouteChange={this.redrawRouter} subRoute={this.props.subRoute} />
                 </div>
                 <Footer />
-                <WebSocketClient />
+                <WebSocketPanel />
             </div>
         );
     }
