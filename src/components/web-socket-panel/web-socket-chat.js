@@ -40,26 +40,27 @@ class WebSocketChat extends Component {
                     <input type="button"
                         onClick={this.exitChat}
                         value="Back" />
-    
-                    {
-                        this.props.messages[this.props.selectedChatClient.id] &&
-                        this.props.messages[this.props.selectedChatClient.id].messages.map((message, ind) => {
+                    <div className="chat-messages">
+                        {
+                            this.props.messages[this.props.selectedChatClient.id] &&
+                            this.props.messages[this.props.selectedChatClient.id].messages.map((message, ind) => {
 
-                            return <div className="chat-message" key={`${message.message}${ind}`}>
-                                {    
-                                    message.me ? 
-                                    <div className='my-message'>
-                                        {message.message}
-                                    </div>
-                                    :
-                                    <div className='other-message'>
-                                        {message.sender}<br/>
-                                        {message.message}
-                                    </div>
-                                }
-                            </div>;
-                        })
-                    }
+                                return <div className="chat-message" key={`${message.message}${ind}`}>
+                                    {    
+                                        message.me ? 
+                                        <div className='my-message'>
+                                            {message.message}
+                                        </div>
+                                        :
+                                        <div className='other-message'>
+                                            {message.sender}<br/>
+                                            {message.message}
+                                        </div>
+                                    }
+                                </div>;
+                            })
+                        }
+                    </div>
     
                     <form onSubmit={this.sendChatMessage}>
                         <input type="text"

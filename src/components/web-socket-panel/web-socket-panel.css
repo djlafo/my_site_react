@@ -1,13 +1,19 @@
 .web-socket-client .chat-window {
-    min-height: 150px;
+    max-height: 50vh;
     width: 80vw;
-    position: relative;
-    padding-bottom: 50px;
+}
+
+.web-socket-client .chat-messages {
+    height: 30vh;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.web-socket-client .chat-message {
+    margin-bottom: 10px;
 }
 
 .web-socket-client .chat-window form {
-    position: absolute;
-    bottom: 0;
     width: 100%;
 }
 

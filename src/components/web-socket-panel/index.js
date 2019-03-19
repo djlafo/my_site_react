@@ -73,8 +73,8 @@ class WebSocketPanel extends Component {
     }
 
     chatWith(e) {
+        const index = Number(e.target.dataset.index);
         if(e.target.dataset.type === 'clientList') {
-            const index = Number(e.target.dataset.index);
             this.setState(state => {
                 const read = Object.assign(state.messages);
                 if(read[state.clientList[index].id]) {
@@ -83,6 +83,17 @@ class WebSocketPanel extends Component {
                 return {
                     selectedChatClient: state.clientList[index],
                     messages: read
+                };
+            });
+        } else {
+            this.setState(state => {
+                const read = Object.assign(state.messages);
+                if(read[index]) {
+                    read[index].unread = false;
+                }
+                return {
+                    selectedChatClient: {id: index},
+                    messages: read 
                 };
             });
         }
@@ -125,14 +136,13 @@ class WebSocketPanel extends Component {
                 sndr = sender || convo;
             }
             if(!newMessages[target]) newMessages[target] = {messages: []};
-            let unread = null;
             newMessages[target].messages.push({
                 me: me, 
                 sender: sndr,
                 message: message
             });
             if(!newMessages[target].unread) {
-                newMessages[target].unread = !me && !document.hasFocus() && (!state.selectedChatClient || state.selectedChatClient.id !== sndr);
+                newMessages[target].unread = !me && (!state.selectedChatClient || state.selectedChatClient.id !== sndr);
             }
             return {messages: newMessages};
         });
@@ -209,20 +219,19 @@ class WebSocketPanel extends Component {
 
                                     :
 
-                                    Object.keys(this.state.messages).map(m => {
-                                        /* return <div key={`${client.id}${client.username}`}>
-                                            {`${client.id}. ${client.username || ''}`}
+                                    Object.keys(this.state.messages).map((mKey, ind) => {
+                                        return <div key={`${mKey}${ind}`}>
+                                            {`${mKey}`}
                                             <input type="button"
                                                 value="Chat"
                                                 data-type="messages"
-                                                data-id={m}
+                                                data-index={mKey}
                                                 onClick={this.chatWith} />
                                             {
-                                                this.isUnread(client.id) && 
+                                                this.isUnread(mKey) && 
                                                 <span> New Messages </span>
-                                            
-                                        </div>; */
-                                        return '';
+                                            }
+                                        </div>;
                                     })
                                 }
                             </div>
