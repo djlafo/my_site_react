@@ -16,8 +16,7 @@ class AdminTargetCommands extends Component {
         this.props.onCommand({
             type: 'redirect',
             client: client,
-            target: target,
-            token: this.props.user.token
+            target: target
         });
     }
 
@@ -26,7 +25,6 @@ class AdminTargetCommands extends Component {
             type: 'apply_class',
             class: e.target.dataset.class,
             client: e.target.dataset.id,
-            token: this.props.user.token,
             apply: e.target.value === e.target.dataset.regText
         });
         e.target.value = e.target.value === e.target.dataset.regText ? e.target.dataset.altText : e.target.dataset.regText;
@@ -37,8 +35,7 @@ class AdminTargetCommands extends Component {
         this.props.onCommand({
             type: 'alert',
             client: e.target.dataset.id,
-            msg: msg,
-            token: this.props.user.token
+            msg: msg
         });
     }
 

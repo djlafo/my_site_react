@@ -13,14 +13,7 @@ import AdminTargetCommands from './admin-target-commands';
 class WebSocketPanel extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            expanded: false,
-            messages: {},
-            selectedChatClient: null
-        };
-        this.ws = new WebSocketClient({
-            URL: this.props.socketURL
-        });
+
         this.toggleConsole = this.toggleConsole.bind(this);
         this.admin = this.admin.bind(this);
         this.executeCommand = this.executeCommand.bind(this);
@@ -29,17 +22,43 @@ class WebSocketPanel extends Component {
         this.isUnread = this.isUnread.bind(this);
         this.hasUnreadMessages = this.hasUnreadMessages.bind(this);
         this.exitChat = this.exitChat.bind(this);
+
+        const ws = new WebSocketClient({
+            URL: this.props.socketURL
+        });
+        ws.onClientMessage = this.onClientMessage.bind(this);
+        ws.onClientListChange = this.onClientListChange.bind(this);
+        ws.onAuthChange = this.onAuthChange.bind(this);
+        this.state = {
+            expanded: false,
+            messages: {},
+            clientList: [],
+            selectedChatClient: null,
+            authenticated: false,
+            ws: ws
+        };
         if (Notification && Notification.permission !== "granted")
             Notification.requestPermission();
     }
 
+    componentDidMount() {
+        if(this.state.ws.opened) {
+            if (this.props.logoutPending) {
+                this.state.ws.deauth();
+                this.props.logout();
+            } else if(this.props.user && !this.state.authenticated) {
+                this.state.ws.auth(this.props.user.token);
+            }
+        }
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
-        if(this.ws.opened) {
+        if(nextState.ws.opened) {
             if (nextProps.logoutPending) {
-                this.ws.deauth();
+                nextState.ws.deauth();
                 nextProps.logout();
-            } else if(nextProps.user && !this.ws.authenticated) {
-                this.ws.auth(nextProps.user.token);
+            } else if(nextProps.user && !nextState.authenticated) {
+                nextState.ws.auth(nextProps.user.token);
             }
         }
         return true;
@@ -55,18 +74,72 @@ class WebSocketPanel extends Component {
 
     chatWith(e) {
         if(e.target.dataset.type === 'clientList') {
-            this.setState({
-                selectedChatClient: this.ws.clientList[e.target.dataset.index]
+            const index = Number(e.target.dataset.index);
+            this.setState(state => {
+                const read = Object.assign(state.messages);
+                if(read[state.clientList[index].id]) {
+                    read[state.clientList[index].id].unread = false;
+                }
+                return {
+                    selectedChatClient: state.clientList[index],
+                    messages: read
+                };
             });
         }
     }
 
     onSendMessage(e) {
+        this.addMessage({ me: true, message: e.msg });
+    }
 
+    onClientMessage(msg) {
+        this.addMessage({ message: msg.msg, convo: msg.sender });
+    }
+
+    onClientListChange(list) {
+        this.setState({ 
+            clientList: list
+        });
+    }
+
+    onAuthChange(auth) {
+        this.setState({
+            authenticated: auth
+        });
+    }
+
+    addMessage({ convo, sender, me, message }) {
+        this.setState(state => {
+            const currentMessages = state.messages;
+            let newMessages = Object.assign(currentMessages, {});
+            let target, sndr = null;
+            if(me) {
+                target = state.selectedChatClient.id;
+                state.ws.send({
+                    type: 'client_message',
+                    msg: message,
+                    target: target
+                });
+            } else {
+                target = convo;
+                sndr = sender || convo;
+            }
+            if(!newMessages[target]) newMessages[target] = {messages: []};
+            let unread = null;
+            newMessages[target].messages.push({
+                me: me, 
+                sender: sndr,
+                message: message
+            });
+            if(!newMessages[target].unread) {
+                newMessages[target].unread = !me && !document.hasFocus() && (!state.selectedChatClient || state.selectedChatClient.id !== sndr);
+            }
+            return {messages: newMessages};
+        });
     }
 
     isUnread(client) {
-        return messages[client].unread;
+        return this.state.messages[client] && this.state.messages[client].unread;
     }
 
     hasUnreadMessages(messages) {
@@ -82,7 +155,7 @@ class WebSocketPanel extends Component {
     }
 
     executeCommand(msg) {
-        this.ws.send(msg, {auth: true});
+        this.state.ws.send(msg, {auth: true});
     }
 
     admin(user) {
@@ -95,7 +168,7 @@ class WebSocketPanel extends Component {
                 {
                     this.admin(this.props.user) &&
                     <input type="button"
-                        value={`Toggle WSS Console (${this.ws.clientList.length}) ${this.hasUnreadMessages(this.state.messages) ? '(New Messages)': ''}`} 
+                        value={`Toggle WSS Console (${this.state.clientList.length}) ${this.hasUnreadMessages(this.state.messages) ? '(New Messages)': ''}`} 
                         onClick={this.toggleConsole} />
                 }
                 {
@@ -108,6 +181,7 @@ class WebSocketPanel extends Component {
                 {
                     this.state.expanded && 
                     <Card>
+                        <div>
                         {
                             (!this.state.selectedChatClient &&
                             this.state.selectedChatClient !== 0) 
@@ -117,7 +191,7 @@ class WebSocketPanel extends Component {
 
                                     ?
 
-                                    this.ws.clientList.map((client, ind) => {
+                                    this.state.clientList.map((client, ind) => {
                                         return <div key={`${client.id}${client.username}`}>
                                             {`${client.id}. ${client.ip || ''} ${client.username || ''}`}
                                             <input type="button"
@@ -136,7 +210,7 @@ class WebSocketPanel extends Component {
                                     :
 
                                     Object.keys(this.state.messages).map(m => {
-                                        {/* return <div key={`${client.id}${client.username}`}>
+                                        /* return <div key={`${client.id}${client.username}`}>
                                             {`${client.id}. ${client.username || ''}`}
                                             <input type="button"
                                                 value="Chat"
@@ -146,8 +220,9 @@ class WebSocketPanel extends Component {
                                             {
                                                 this.isUnread(client.id) && 
                                                 <span> New Messages </span>
-                                            }
-                                        </div>; */}
+                                            
+                                        </div>; */
+                                        return '';
                                     })
                                 }
                             </div>
@@ -157,6 +232,7 @@ class WebSocketPanel extends Component {
                                 messages={this.state.messages}
                                 onExit={this.exitChat} />
                         }
+                        </div>
                     </Card>
                 }
             </div>

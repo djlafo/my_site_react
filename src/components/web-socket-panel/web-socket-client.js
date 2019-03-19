@@ -1,18 +1,23 @@
 class WebSocketClient {
     constructor({ URL }) {
-        this.socket = new WebSocket(URL);
-        ws.onopen = this._onOpen,
-        ws.onclose = this._onClose,
-        ws.onerror = (e) => {
-            console.error('WebSocket error: ', e.message);
-        };
-        ws.onmessage = this._onMessage
+        this.URL = URL;
+        this.clear();
+        this.reconnect();
     }
 
     clear() {
-        this.authenticated = false;
-        this.clientList = null;
         this.token = null;
+        if(this.onAuthChange) this.onAuthChange(false);
+    }
+
+    reconnect() {
+        this.socket = new WebSocket(this.URL);
+        this.socket.onopen = this._onOpen.bind(this);
+        this.socket.onclose = this._onClose.bind(this);
+        this.socket.onerror = (e) => {
+            console.error('WebSocket error: ', e.message);
+        };
+        this.socket.onmessage = this._onMessage.bind(this);
     }
 
     _onOpen(e) {
@@ -33,7 +38,7 @@ class WebSocketClient {
         this.clear();
         setTimeout(() => {
             console.log('Attempting reconnect...');
-            // reconnect
+            this.reconnect();
         }, 5000);
     }
 
@@ -45,6 +50,7 @@ class WebSocketClient {
             break;
             case 'client_list':
                 this.clientList = msg.msg;
+                this.onClientListChange(this.clientList);
             break;
             case 'client_message':
                 this.onClientMessage(msg);
@@ -65,7 +71,7 @@ class WebSocketClient {
                 alert(msg.msg);
             break;
             case 'auth':
-                this.authenticated = true;
+                this.onAuthChange(true);
             break;
             default: 
                 console.log('Unhandled WS message type: ' + msg.type);
@@ -74,13 +80,13 @@ class WebSocketClient {
     }
 
     get opened() {
-        return this.ws.readyState === WebSocket.OPEN;
+        return this.socket.readyState === WebSocket.OPEN;
     }
 
-    send(msg, opt) {
-        const copy = Object.assign({}, copy);
+    send(msg, opt={}) {
+        const copy = Object.assign({}, msg);
         if(opt.auth) copy.token = this.token;
-        this.socket.send(JSON.parse(msg))
+        this.socket.send(JSON.stringify(copy))
     }
 
     auth(token) {

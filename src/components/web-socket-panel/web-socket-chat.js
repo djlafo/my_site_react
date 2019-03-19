@@ -5,29 +5,12 @@ class WebSocketChat extends Component {
         super(props);
         this.state = {
             selectedChatClient: null,
-            chatInput: '',
-            messages: {},
-            unread: [],
+            chatInput: ''
         };
         this.exitChat = this.exitChat.bind(this);
         this.sendChatMessage = this.sendChatMessage.bind(this);
         this.updateChatInput = this.updateChatInput.bind(this);
     }
-
-    addMessage(chatTarget, message) {
-        let newMessages = Object.assign(this.props.messages);
-        if(!newMessages[chatTarget]) newMessages[chatTarget] = [];
-        newMessages[chatTarget].push(message);
-        let newState = {
-            messages: newMessages
-        };
-        let sender = Number(message.sender);
-        if(!message.me && !this.state.unread.find(person => person === sender) && this.props.selectedChatClient !== sender) {
-            newState.unread = this.state.unread.concat(sender);
-        }
-        this.setState(newState);
-    }
-    
     
     exitChat() {
         this.props.onExit();
@@ -41,17 +24,11 @@ class WebSocketChat extends Component {
 
     sendChatMessage(e) {
         e.preventDefault();
-        this.addMessage(this.props.selectedChatClient, {
-            msg: this.state.chatInput,
-            me: true
-        });
-        this.sendMessage({
-            type: 'client_message',
-            target: this.props.selectedChatClient,
-            msg: this.state.chatInput
-        }, {});
-        this.setState({
-            chatInput: ''
+        this.setState((state, props) => {
+            props.onSendMessage({
+                msg: state.chatInput
+            });
+            return {chatInput: ''};
         });
     }
 
@@ -65,18 +42,19 @@ class WebSocketChat extends Component {
                         value="Back" />
     
                     {
-                        this.props.messages[this.props.selectedChatClient] &&
-                        this.props.messages[this.props.selectedChatClient].map((message, ind) => {
-                            return <div className="chat-message" key={`${message.msg}${ind}`}>
+                        this.props.messages[this.props.selectedChatClient.id] &&
+                        this.props.messages[this.props.selectedChatClient.id].messages.map((message, ind) => {
+
+                            return <div className="chat-message" key={`${message.message}${ind}`}>
                                 {    
                                     message.me ? 
                                     <div className='my-message'>
-                                        {message.msg}
+                                        {message.message}
                                     </div>
                                     :
                                     <div className='other-message'>
-                                        {this.props.selectedChatClient}<br/>
-                                        {message.msg}
+                                        {message.sender}<br/>
+                                        {message.message}
                                     </div>
                                 }
                             </div>;
