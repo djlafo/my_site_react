@@ -1,7 +1,7 @@
 function rootReducer(state={}, action) {
     const user = userReducer(state.user, action);
     return {
-        apiURL: window.location.href.includes('localhost') ? 'http://localhost:3001/api' : 'https://dylanlafont.com:3001/api',
+        apiURL: window.location.href.includes('localhost') ? 'http://localhost:3001/api' : 'http://dylanlafont.com:3001/api',
         socketURL: window.location.href.includes('localhost') ? 'ws://localhost:3001/' : 'wss://dylanlafont.com:3001/',
         user: user,
         logoutPending: action.type === 'logout' || (user && state.logoutPending )
