@@ -3,4 +3,4 @@ os: linux
 
 files:
    - source: /build/
-     destination: /var/www/html/personal/
+     destination: /var/www/html/
